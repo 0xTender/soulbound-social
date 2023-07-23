@@ -2,6 +2,8 @@ import GraphQLProvider from "@app/providers/GraphQLProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import SidebarLayout from "@app/components/SidebarLayout";
+import { cn } from "@app/lib/utils";
 
 const fontFamily = Outfit({ subsets: ["latin"] });
 
@@ -16,9 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={fontFamily.className}>
-        <GraphQLProvider>{children}</GraphQLProvider>
+    <html lang="en" className="h-full">
+      <body className={cn(fontFamily.className, "h-full")}>
+        <GraphQLProvider>
+          <SidebarLayout>{children}</SidebarLayout>
+        </GraphQLProvider>
       </body>
     </html>
   );

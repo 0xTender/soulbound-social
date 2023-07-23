@@ -1,7 +1,7 @@
 import { ExitIcon } from "@radix-ui/react-icons";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import Menu from "./Menu";
 
 export default function LeftPanel() {

@@ -1,2 +1,5 @@
 [build]
 target = "wasm32-unknown-unknown"
+
+[target.wasm32-unknown-unknown]
+runner = "/Users/aniketchowdhury/Experiments/0xTender/linera-protocol/target/release/test-runner"

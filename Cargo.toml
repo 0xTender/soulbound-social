@@ -1,2 +1,19 @@
 [workspace]
 members = ["soulbound"]
+resolver = "2"
+
+exclude = [
+  "web",
+]
+
+[workspace.dependencies]
+getrandom = {version = "0.2.10", features = ["js"]}
+
+[profile.release]
+debug = true
+lto = true
+opt-level = 'z'
+strip = 'debuginfo'
+
+[profile.bench]
+debug = true

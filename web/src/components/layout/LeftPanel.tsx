@@ -25,7 +25,7 @@ export default function LeftPanel() {
         <Menu />
       </section>
       <section>
-        <Button className="flex gap-2">
+        <Button className="flex gap-2" variant={"secondary"}>
           <ExitIcon />
           Logout
         </Button>

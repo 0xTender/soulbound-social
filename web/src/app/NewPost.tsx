@@ -32,7 +32,7 @@ export default function NewPost() {
       <CardContent>
         <form className="flex gap-4">
           <Textarea placeholder="Today I went out to meet my friends..." />
-          <Button className="flex gap-2 items-center">
+          <Button className="flex gap-2 items-center" variant={"outline"}>
             <EnvelopeOpenIcon /> Post
           </Button>
         </form>

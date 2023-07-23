@@ -18,3 +18,6 @@ impl ServiceAbi for ApplicationAbi {
     type Query = ();
     type QueryResponse = ();
 }
+
+/// An identifier for AccountId
+pub type AccountId = u64;

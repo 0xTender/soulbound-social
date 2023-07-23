@@ -3,4 +3,6 @@
 use linera_sdk::{base::Amount, test::TestValidator};
 
 #[tokio::test]
-async fn test_init() {}
+async fn test_init() {
+    todo!()
+}

@@ -25,3 +25,6 @@ path = "src/contract.rs"
 [[bin]]
 name = "soulbound_service"
 path = "src/service.rs"
+
+[features]
+test = []

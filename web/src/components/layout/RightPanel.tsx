@@ -1,7 +1,12 @@
+import { CardDescription, CardTitle } from "../ui/card";
+
 export default function RightPanel() {
   return (
     <div className="grid gap-4">
-      <h1 className="text-lg text-slate-700 font-medium">Messages</h1>
+      <CardTitle>Messages</CardTitle>
+      <CardDescription>
+        You don&apos;t have any messages yet. Start a conversation with someone!
+      </CardDescription>
     </div>
   );
 }

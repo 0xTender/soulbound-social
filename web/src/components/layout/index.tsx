@@ -8,8 +8,10 @@ export default function Layout({ children }: PropsWithChildren<unknown>) {
       <div className="col-span-2 bg-slate-100 m-4 rounded-lg p-4">
         <LeftPanel />
       </div>
-      <div className="col-span-6 my-4 rounded-lg">{children}</div>
-      <div className="col-span-2 bg-slate-100 m-4 rounded-lg p-4">
+      <div className="col-span-4 my-4 rounded-lg overflow-scroll">
+        {children}
+      </div>
+      <div className="col-span-4 bg-slate-100 m-4 rounded-lg p-4">
         <RightPanel />
       </div>
     </div>

@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@app/components/ui/card";
-import { Input } from "@app/components/ui/input";
+import { Textarea } from "@app/components/ui/textarea";
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
 
 export default function NewPost() {
@@ -31,7 +31,7 @@ export default function NewPost() {
       </CardHeader>
       <CardContent>
         <form className="flex gap-4">
-          <Input placeholder="Today I went out to meet my friends..." />
+          <Textarea placeholder="Today I went out to meet my friends..." />
           <Button className="flex gap-2 items-center">
             <EnvelopeOpenIcon /> Post
           </Button>

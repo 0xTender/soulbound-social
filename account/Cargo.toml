@@ -1,8 +1,9 @@
 [package]
 edition = "2021"
-name = "soulbound"
+name = "account"
 version = "0.1.0"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 async-graphql = {workspace = true}
 async-trait = {workspace = true}
@@ -13,18 +14,3 @@ linera-views = {workspace = true}
 serde = {workspace = true}
 serde_json = {workspace = true}
 thiserror = {workspace = true}
-
-[dev-dependencies]
-linera-sdk = {version = "0.2.0", features = ["test"]}
-webassembly-test = "0.1.0"
-
-[[bin]]
-name = "soulbound_contract"
-path = "src/contract.rs"
-
-[[bin]]
-name = "soulbound_service"
-path = "src/service.rs"
-
-[features]
-test = []

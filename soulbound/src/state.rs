@@ -1,6 +1,7 @@
 use async_graphql::SimpleObject;
-use linera_sdk::views::{RegisterView, ViewStorageContext};
+use linera_sdk::views::{MapView, RegisterView, ViewStorageContext};
 use linera_views::views::{GraphQLView, RootView};
+use soulbound::AccountId;
 
 // User Account Details
 // First Name
@@ -21,10 +22,11 @@ pub struct AccountDetails {
 pub struct Application {
     pub value: RegisterView<u64>,
     // Add fields here.
-    // pub accounts: MapView<AccountId, AccountDetails>,
+    pub accounts: MapView<AccountId, AccountDetails>,
 }
 
 impl Application {
+    #[allow(dead_code)]
     pub fn increment(&mut self, counter: u64) {
         let v = self.value.get_mut();
         *v = *v + counter;

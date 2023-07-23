@@ -33,9 +33,16 @@ impl Contract for Application {
     async fn execute_operation(
         &mut self,
         _context: &OperationContext,
-        _operation: Self::Operation,
+        operation: Self::Operation,
     ) -> Result<ExecutionResult<Self::Message>, Self::Error> {
-        Ok(ExecutionResult::default())
+        let result = ExecutionResult::default();
+        match operation {
+            soulbound::Operation::UpdateCounter { counter } => {
+                self.execute_update_counter(counter).await?
+            }
+        }
+
+        Ok(result)
     }
 
     async fn execute_message(
@@ -68,6 +75,14 @@ impl Contract for Application {
     }
 }
 
+impl Application {
+    async fn execute_update_counter(&mut self, counter: u64) -> Result<(), ContractError> {
+        self.increment(counter);
+
+        Ok(())
+    }
+}
+
 /// An error that can occur during the contract execution.
 #[derive(Debug, Error)]
 pub enum ContractError {
@@ -78,6 +93,5 @@ pub enum ContractError {
     /// Failed to deserialize JSON string
     #[error("Failed to deserialize JSON string")]
     JsonError(#[from] serde_json::Error),
-
     // Add more error variants here.
 }

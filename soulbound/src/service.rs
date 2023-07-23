@@ -3,9 +3,11 @@
 mod state;
 
 use self::state::Application;
+use async_graphql::{EmptySubscription, Object, Schema};
 use async_trait::async_trait;
 use linera_sdk::{base::WithServiceAbi, QueryContext, Service, ViewStateStorage};
-use std::sync::Arc;
+use soulbound::Operation;
+use std::{sync::Arc, u64};
 use thiserror::Error;
 
 linera_sdk::service!(Application);
@@ -22,9 +24,20 @@ impl Service for Application {
     async fn query_application(
         self: Arc<Self>,
         _context: &QueryContext,
-        _query: Self::Query,
-    ) -> Result<(), Self::Error> {
-        Err(ServiceError::QueriesNotSupported)
+        request: Self::Query,
+    ) -> Result<Self::QueryResponse, Self::Error> {
+        let schema = Schema::build(self.clone(), MutationRoot {}, EmptySubscription).finish();
+        let response = schema.execute(request).await;
+        Ok(response)
+    }
+}
+
+struct MutationRoot;
+
+#[Object]
+impl MutationRoot {
+    async fn update_counter(&self, counter: u64) -> Vec<u8> {
+        bcs::to_bytes(&Operation::UpdateCounter { counter }).unwrap()
     }
 }
 
@@ -38,6 +51,5 @@ pub enum ServiceError {
     /// Invalid query argument; could not deserialize request.
     #[error("Invalid query argument; could not deserialize request")]
     InvalidQuery(#[from] serde_json::Error),
-
     // Add error variants here.
 }

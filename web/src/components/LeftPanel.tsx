@@ -6,7 +6,7 @@ import Menu from "./Menu";
 
 export default function LeftPanel() {
   return (
-    <menu className="flex flex-col gap-4 justify-between h-full p-4">
+    <menu className="flex flex-col gap-4 justify-between h-full">
       <section>
         <div className="flex gap-4 items-center flex-wrap">
           <Avatar className="h-16 w-16">

@@ -1,3 +1,4 @@
+use account::AccountOwner;
 use async_graphql::{Request, Response};
 use linera_sdk::base::{ContractAbi, ServiceAbi};
 use serde::{Deserialize, Serialize};
@@ -22,7 +23,7 @@ impl ServiceAbi for ApplicationAbi {
 }
 
 /// An identifier for AccountId
-pub type AccountId = u64;
+pub type AccountId = AccountOwner;
 
 /// Operations that can be executed by the application.
 #[derive(Debug, Deserialize, Serialize)]

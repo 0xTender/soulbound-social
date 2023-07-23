@@ -4,6 +4,7 @@ name = "soulbound"
 version = "0.1.0"
 
 [dependencies]
+account = {path = "../account"}
 async-graphql = {workspace = true}
 async-trait = {workspace = true}
 bcs = {workspace = true}

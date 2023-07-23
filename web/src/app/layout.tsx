@@ -1,7 +1,8 @@
-import GraphQLProvider from "@app/providers/GraphQLProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { cn } from "@app/lib/utils";
+import { Providers } from "@app/components/providers/Providers";
 
 const fontFamily = Outfit({ subsets: ["latin"] });
 
@@ -16,9 +17,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={fontFamily.className}>
-        <GraphQLProvider>{children}</GraphQLProvider>
+    <html
+      lang="en"
+      className="dark" // seems to be required for tailwind jit warmup
+      suppressHydrationWarning
+    >
+      <body
+        className={cn(
+          fontFamily.className,
+          "h-screen bg-slate-50 dark:bg-slate-950"
+        )}
+      >
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

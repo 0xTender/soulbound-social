@@ -6,7 +6,7 @@ use self::state::Application;
 use async_graphql::{EmptySubscription, Object, Schema};
 use async_trait::async_trait;
 use linera_sdk::{base::WithServiceAbi, QueryContext, Service, ViewStateStorage};
-use soulbound::Operation;
+use soulbound::{AccountId, Operation};
 use std::{sync::Arc, u64};
 use thiserror::Error;
 
@@ -38,6 +38,46 @@ struct MutationRoot;
 impl MutationRoot {
     async fn update_counter(&self, counter: u64) -> Vec<u8> {
         bcs::to_bytes(&Operation::UpdateCounter { counter }).unwrap()
+    }
+
+    async fn update_counter_personal(&self, account_id: AccountId, counter: u64) -> Vec<u8> {
+        bcs::to_bytes(&Operation::UpdateCounterPersonal {
+            account_id,
+            counter,
+        })
+        .unwrap()
+    }
+
+    async fn create_account(
+        &self,
+        account_id: AccountId,
+        first_name: String,
+        last_name: String,
+        image: String,
+    ) -> Vec<u8> {
+        bcs::to_bytes(&Operation::CreateAccount {
+            account_id,
+            first_name,
+            last_name,
+            image,
+        })
+        .unwrap()
+    }
+
+    async fn update_account_data(
+        &self,
+        account_id: AccountId,
+        first_name: Option<String>,
+        last_name: Option<String>,
+        image: Option<String>,
+    ) -> Vec<u8> {
+        bcs::to_bytes(&Operation::UpdateAccountData {
+            account_id,
+            first_name,
+            last_name,
+            image,
+        })
+        .unwrap()
     }
 }
 

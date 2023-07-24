@@ -69,6 +69,14 @@ impl Contract for Application {
                 self.update_account_data(account_id, first_name, last_name, image)
                     .await;
             }
+            soulbound::Operation::AddPost { author, text } => {
+                Self::check_account_authentication(None, context.authenticated_signer, author)?;
+                self.add_post(author, text).await;
+            }
+            soulbound::Operation::LikePost { owner, post_id } => {
+                Self::check_account_authentication(None, context.authenticated_signer, owner)?;
+                self.like_post(owner, post_id).await;
+            }
         }
 
         Ok(result)

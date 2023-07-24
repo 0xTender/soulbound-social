@@ -1,6 +1,8 @@
-use linera_sdk::views::{MapView, RegisterView, ViewStorageContext};
-use linera_views::views::{GraphQLView, RootView};
-use soulbound::{AccountDetails, AccountId};
+use async_graphql::SimpleObject;
+use linera_sdk::views::{CustomCollectionView, MapView, RegisterView, ViewStorageContext};
+use linera_views::views::{GraphQLView, RootView, View};
+use serde::{Deserialize, Serialize};
+use soulbound::{AccountDetails, AccountId, Like, Post};
 
 // User Account Details
 // First Name
@@ -9,6 +11,17 @@ use soulbound::{AccountDetails, AccountId};
 // My Posts
 // Messages
 
+#[derive(Clone, Debug, Deserialize, Serialize, SimpleObject)]
+pub struct OrderEntry {
+    pub owner: AccountId,
+}
+
+#[derive(View, GraphQLView)]
+#[view(context = "ViewStorageContext")]
+pub struct LevelView {
+    pub account: MapView<AccountId, bool>,
+}
+
 #[derive(RootView, GraphQLView)]
 #[view(context = "ViewStorageContext")]
 pub struct Application {
@@ -16,6 +29,12 @@ pub struct Application {
     pub values: MapView<AccountId, u64>,
     // Add fields here.
     pub accounts: MapView<AccountId, AccountDetails>,
+    // post_id
+    pub current_post_id: RegisterView<u64>,
+    // posts (post_id, post)
+    pub posts: MapView<u64, Post>,
+
+    pub likes: CustomCollectionView<Like, LevelView>,
 }
 
 impl Application {
@@ -79,6 +98,35 @@ impl Application {
 
         if image.is_some() {
             value.image = image.unwrap();
+        }
+    }
+
+    #[allow(dead_code)]
+    pub async fn add_post(&mut self, author: AccountId, text: String) {
+        let post_id = self.current_post_id.get_mut();
+        *post_id = *post_id + 1;
+
+        self.posts
+            .insert(&post_id, Post { author, text })
+            .expect("Adding post failed");
+    }
+
+    #[allow(dead_code)]
+    pub async fn like_post(&mut self, owner: AccountId, post_id: u64) {
+        let like = Like { post_id };
+        let latest_post_id = self.current_post_id.get_mut();
+
+        assert!(
+            post_id <= *latest_post_id,
+            "Post does not exist. Latest post id: {}, post id: {}",
+            latest_post_id,
+            post_id
+        );
+        let view = self.likes.load_entry_mut(&like).await.unwrap();
+        if view.account.get(&owner).await.unwrap().is_none() {
+            view.account.insert(&owner, true).unwrap();
+        } else {
+            view.account.remove(&owner).unwrap();
         }
     }
 }

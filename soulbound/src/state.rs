@@ -35,6 +35,7 @@ pub struct Application {
     pub posts: MapView<u64, Post>,
 
     pub likes: CustomCollectionView<Like, LevelView>,
+    pub likes_count: MapView<u64, u64>,
 }
 
 impl Application {
@@ -122,11 +123,22 @@ impl Application {
             latest_post_id,
             post_id
         );
+
+        let likes_count = match self.likes_count.get_mut(&post_id).await.unwrap() {
+            Some(count) => count,
+            None => {
+                self.likes_count.insert(&post_id, 0).unwrap();
+                self.likes_count.get_mut(&post_id).await.unwrap().unwrap()
+            }
+        };
+
         let view = self.likes.load_entry_mut(&like).await.unwrap();
         if view.account.get(&owner).await.unwrap().is_none() {
             view.account.insert(&owner, true).unwrap();
+            *likes_count += 1;
         } else {
             view.account.remove(&owner).unwrap();
+            *likes_count -= 1;
         }
     }
 }

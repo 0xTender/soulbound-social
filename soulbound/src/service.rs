@@ -79,6 +79,14 @@ impl MutationRoot {
         })
         .unwrap()
     }
+
+    async fn add_post(&self, author: AccountId, text: String) -> Vec<u8> {
+        bcs::to_bytes(&Operation::AddPost { author, text }).unwrap()
+    }
+
+    async fn like_post(&self, owner: AccountId, post_id: u64) -> Vec<u8> {
+        bcs::to_bytes(&Operation::LikePost { owner, post_id }).unwrap()
+    }
 }
 
 /// An error that can occur while querying the service.

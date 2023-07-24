@@ -11,36 +11,33 @@ import { HeartFilledIcon, Share1Icon } from "@radix-ui/react-icons";
 import { type PropsWithChildren } from "react";
 import { gql, useQuery } from "@apollo/client";
 
-const GET_POST = gql`
-  query Posts($id: u64) {
-    posts(u64: $id) {
-      text
-    }
-  }
-`;
-
 export default function Post({
   name,
   time,
   logo,
   logoAlt,
-  content,
+  id,
   likes,
 }: PropsWithChildren<{
   name: string;
   time: string;
   logo: string;
   logoAlt: string;
-  content: string;
+  id: number;
   likes?: number;
 }>) {
-  const { data: posts } = useQuery(GET_POST, {
-    variables: {
-      id: 1,
-    },
-  });
+  const { data } = useQuery<{ posts: { text: string } }>(
+    gql`
+  query Posts {
+    posts(u64: ${id}) {
+      text
+    }
+  }
+`,
+    {}
+  );
 
-  console.log(posts);
+  console.log(data?.posts.text);
 
   return (
     <Card>
@@ -52,11 +49,11 @@ export default function Post({
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col gap-1 pb-2">
-          <CardTitle>@{name}</CardTitle>
-          <CardDescription>{time}</CardDescription>
+          <CardTitle>{name}</CardTitle>
+          <CardDescription>{}</CardDescription>
         </div>
       </CardHeader>
-      <CardContent>{content}</CardContent>
+      <CardContent>{data?.posts.text}</CardContent>
       <CardFooter className="flex gap-4 items-center">
         <span className="flex items-center gap-1 text-rose-500 hover:text-rose-700 cursor-pointer">
           <HeartFilledIcon className="h-5 w-5" />

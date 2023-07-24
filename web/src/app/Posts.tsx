@@ -39,21 +39,20 @@ export default function Posts() {
   const { data: posts } = useQuery<{ postsKeys: Array<number> }>(GET_POST_KEYS);
 
   return (
-    <>
-      {posts?.postsKeys.map((e) => {
+    <div className="flex flex-col-reverse gap-4">
+      {posts?.postsKeys.map((e, idx) => {
         return (
-          <>
-            <Post
-              name={data?.accounts?.username ?? ""}
-              time="2h ago"
-              logo={data?.accounts?.image ?? ""}
-              logoAlt={data?.accounts?.username ?? ""}
-              content="Some Post Text"
-              likes={0}
-            />
-          </>
+          <Post
+            key={idx}
+            id={e}
+            name={data?.accounts?.username ?? ""}
+            time="2h ago"
+            logo={data?.accounts?.image ?? ""}
+            logoAlt={data?.accounts?.username ?? ""}
+            likes={0}
+          />
         );
       })}
-    </>
+    </div>
   );
 }

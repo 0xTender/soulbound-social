@@ -13,20 +13,27 @@ import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { Kind, OperationTypeNode } from "graphql";
 
-function GraphQLProvider({ children }: React.PropsWithChildren<unknown>) {
-  const client = apolloClient();
+function GraphQLProvider({
+  children,
+  applicationId,
+  port,
+}: React.PropsWithChildren<{
+  applicationId: string;
+  port: string;
+}>) {
+  const client = apolloClient(applicationId, port);
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
 
-function apolloClient() {
+function apolloClient(applicationId: string, port: string) {
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: "ws://localhost:8080/ws",
+      url: `ws://localhost:${port}/ws`,
     })
   );
 
   const httpLink = new HttpLink({
-    uri: "http://localhost:8080/applications/", // !fix link
+    uri: `http://localhost:${port}/applications/` + applicationId, // !fix link
   });
 
   const splitLink = split(

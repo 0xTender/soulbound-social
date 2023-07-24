@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { cn } from "@app/lib/utils";
-import { Providers } from "@app/components/providers/Providers";
 
 const fontFamily = Outfit({ subsets: ["latin"] });
 
@@ -28,7 +27,7 @@ export default function RootLayout({
           "h-screen bg-slate-50 dark:bg-slate-950"
         )}
       >
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

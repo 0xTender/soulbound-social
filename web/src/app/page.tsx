@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NewPost from "./NewPost";
-import Posts from "./Posts";
 import { useSearchParams } from "next/navigation";
 import { Providers } from "@app/components/providers/Providers";
+import { Base } from "./Base";
 
 export default function Home() {
   const [hydrated, setHydrated] = useState<boolean>(false);
@@ -32,10 +31,7 @@ export default function Home() {
 
   return hydrated && state ? (
     <Providers {...state}>
-      <main className="h-full w-full flex flex-col gap-4">
-        <NewPost />
-        <Posts />
-      </main>
+      <Base />
     </Providers>
   ) : (
     <></>

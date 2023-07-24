@@ -9,6 +9,15 @@ import {
 } from "@app/components/ui/card";
 import { HeartFilledIcon, Share1Icon } from "@radix-ui/react-icons";
 import { type PropsWithChildren } from "react";
+import { gql, useQuery } from "@apollo/client";
+
+const GET_POST = gql`
+  query Posts($id: u64) {
+    posts(u64: $id) {
+      text
+    }
+  }
+`;
 
 export default function Post({
   name,
@@ -25,6 +34,14 @@ export default function Post({
   content: string;
   likes?: number;
 }>) {
+  const { data: posts } = useQuery(GET_POST, {
+    variables: {
+      id: 1,
+    },
+  });
+
+  console.log(posts);
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-4">

@@ -34,7 +34,7 @@ export default function NewPost() {
       lastName: string;
       image: string;
       username: string;
-    };
+    } | null;
   }>(GET_ACCOUNT_VALUE, {
     fetchPolicy: "network-only",
     variables: {
@@ -47,11 +47,11 @@ export default function NewPost() {
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar>
           <AvatarImage
-            src={data?.accounts.image ?? "https://github.com/shadcn.png"}
-            alt={data?.accounts.username ?? "username"}
+            src={data?.accounts?.image ?? "https://github.com/shadcn.png"}
+            alt={data?.accounts?.username ?? "username"}
           />
           <AvatarFallback className="ring ring-inset ring-slate-300">
-            {data?.accounts.username ?? ""}{" "}
+            {data?.accounts?.username ?? ""}{" "}
           </AvatarFallback>
         </Avatar>
         <div className="grid gap-1 pb-1">

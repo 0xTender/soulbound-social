@@ -26,7 +26,7 @@ export default function LeftPanel() {
       lastName: string;
       image: string;
       username: string;
-    };
+    } | null;
   }>(GET_ACCOUNT_VALUE, {
     fetchPolicy: "network-only",
     variables: {
@@ -41,17 +41,18 @@ export default function LeftPanel() {
           <div className="flex gap-4 items-center flex-wrap">
             <Avatar className="h-16 w-16">
               <AvatarImage
-                src={data?.accounts.image ?? "https://github.com/shadcn.png"}
-                alt={data?.accounts.username ?? "username"}
+                src={data?.accounts?.image ?? ""}
+                alt={data?.accounts?.username ?? "username"}
               />
               <AvatarFallback className="ring ring-inset ring-slate-300">
-                {data?.accounts.username ?? ""}{" "}
+                {data?.accounts?.username ?? ""}{" "}
               </AvatarFallback>
             </Avatar>
             <data>
-              <h1>{data?.accounts.username ?? ""}</h1>
+              <h1>{data?.accounts?.username ?? ""}</h1>
               <Badge className="mb-2">
-                {data?.accounts.firstName ?? ""} {data?.accounts.lastName ?? ""}
+                {data?.accounts?.firstName ?? ""}{" "}
+                {data?.accounts?.lastName ?? ""}
               </Badge>
             </data>
           </div>

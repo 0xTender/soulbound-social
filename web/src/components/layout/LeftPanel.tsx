@@ -34,16 +34,14 @@ export default function LeftPanel() {
     },
   });
 
-  console.log(data, "dt");
-
   return (
     <menu className="flex flex-col gap-4 justify-between h-full">
       <section>
-        {data?.accounts && (
+        {
           <div className="flex gap-4 items-center flex-wrap">
             <Avatar className="h-16 w-16">
               <AvatarImage
-                src={data.accounts.image ?? "https://github.com/shadcn.png"}
+                src={data?.accounts.image ?? "https://github.com/shadcn.png"}
                 alt={data?.accounts.username ?? "username"}
               />
               <AvatarFallback className="ring ring-inset ring-slate-300">
@@ -57,7 +55,7 @@ export default function LeftPanel() {
               </Badge>
             </data>
           </div>
-        )}
+        }
       </section>
       <section className="h-full my-8">
         <Menu />

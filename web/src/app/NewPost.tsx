@@ -11,15 +11,47 @@ import {
 } from "@app/components/ui/card";
 import { Textarea } from "@app/components/ui/textarea";
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
+import { useQuery, gql } from "@apollo/client";
+import { useContext } from "react";
+import { StateContext } from "@app/components/providers/StateContext";
+
+const GET_ACCOUNT_VALUE = gql`
+  query Account($owner: AccountOwner) {
+    accounts(accountId: $owner) {
+      firstName
+      lastName
+      username
+      image
+    }
+  }
+`;
 
 export default function NewPost() {
+  const { accountId } = useContext(StateContext);
+  const { data } = useQuery<{
+    accounts: {
+      firstName: string;
+      lastName: string;
+      image: string;
+      username: string;
+    };
+  }>(GET_ACCOUNT_VALUE, {
+    fetchPolicy: "network-only",
+    variables: {
+      owner: `User:${accountId}`,
+    },
+  });
+
   return (
     <Card className="h-fit">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarImage
+            src={data?.accounts.image ?? "https://github.com/shadcn.png"}
+            alt={data?.accounts.username ?? "username"}
+          />
           <AvatarFallback className="ring ring-inset ring-slate-300">
-            CN
+            {data?.accounts.username ?? ""}{" "}
           </AvatarFallback>
         </Avatar>
         <div className="grid gap-1 pb-1">

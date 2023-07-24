@@ -11,8 +11,8 @@ import {
 } from "@app/components/ui/card";
 import { Textarea } from "@app/components/ui/textarea";
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
-import { useQuery, gql } from "@apollo/client";
-import { useContext } from "react";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import { useContext, useState } from "react";
 import { StateContext } from "@app/components/providers/StateContext";
 
 const GET_ACCOUNT_VALUE = gql`
@@ -23,6 +23,12 @@ const GET_ACCOUNT_VALUE = gql`
       username
       image
     }
+  }
+`;
+
+const CREATE_POST = gql`
+  mutation AddPost($author: AccountOwner, $text: String) {
+    addPost(author: $author, text: $text)
   }
 `;
 
@@ -39,6 +45,20 @@ export default function NewPost() {
     fetchPolicy: "network-only",
     variables: {
       owner: `User:${accountId}`,
+    },
+  });
+
+  const [value, setValue] = useState<string>();
+
+  const [addPost] = useMutation<
+    {
+      data: string;
+    },
+    { author: string; text: string }
+  >(CREATE_POST, {
+    onError: (error) => console.error(error),
+    onCompleted: () => {
+      window.location.reload();
     },
   });
 
@@ -62,8 +82,24 @@ export default function NewPost() {
         </div>
       </CardHeader>
       <CardContent>
-        <form className="flex gap-4">
-          <Textarea placeholder="Today I went out to meet my friends..." />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void addPost({
+              variables: {
+                author: `User:${accountId}`,
+                text: value ?? "",
+              },
+            });
+          }}
+          className="flex gap-4"
+        >
+          <Textarea
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            placeholder="Today I went out to meet my friends..."
+          />
           <Button className="flex gap-2 items-center" variant={"outline"}>
             <EnvelopeOpenIcon /> Post
           </Button>

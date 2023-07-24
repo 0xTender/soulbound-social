@@ -1,3 +1,11 @@
+## SoundBound Social Platform
+
+- Cross Chain Communication
+- Post Information
+- Like Posts
+
+# Development Details for Fish CLI
+
 ```fish
 set -gx LINERA_PATH /Users/aniketchowdhury/Experiments/0xTender/linera-protocol/
 

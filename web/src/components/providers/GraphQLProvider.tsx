@@ -20,6 +20,7 @@ function GraphQLProvider({
 }: React.PropsWithChildren<{
   applicationId: string;
   port: string;
+  accountId: string;
 }>) {
   const client = apolloClient(applicationId, port);
   return <ApolloProvider client={client}>{children}</ApolloProvider>;

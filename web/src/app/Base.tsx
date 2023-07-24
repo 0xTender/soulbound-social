@@ -1,9 +1,11 @@
 "use client";
 
-import type { FC } from "react";
+import { useContext, type FC, useEffect } from "react";
 import NewPost from "./NewPost";
 import Posts from "./Posts";
 import { gql, useLazyQuery } from "@apollo/client";
+import { StateContext } from "@app/components/providers/StateContext";
+import { CreateAccount } from "./CreateAccount";
 
 // const GET_COUNTER_VALUE = gql`
 //   query {
@@ -21,31 +23,42 @@ const GET_ACCOUNT_VALUE = gql`
 `;
 
 export const Base: FC = () => {
-  const [counterQuery, { data, called: counterCalled, error: counterError }] =
+  const { accountId } = useContext(StateContext);
+
+  const [counterQuery, { data, called: accountCalled, error: accountError }] =
     useLazyQuery<{
-      data: {
-        accounts: {
-          firstName: string;
-          lastName: string;
-          image: string;
-        };
-      };
+      accounts: {
+        firstName: string;
+        lastName: string;
+        image: string;
+      } | null;
     }>(GET_ACCOUNT_VALUE, {
       fetchPolicy: "network-only",
       variables: {
-        owner: `User:e4b76cd3773f325e6c67c9b29a09e19e4ef8a8490ae17eb9d0d9082566270152`,
+        owner: `User:${accountId}`,
       },
     });
 
-  if (!counterCalled) {
-    void counterQuery();
-  }
+  useEffect(() => {
+    if (!accountCalled && accountId !== undefined) {
+      void counterQuery();
+    }
+  }, [accountCalled, counterQuery, accountId]);
 
-  console.log(data, counterError, counterCalled);
+  console.log(data, accountError, accountCalled);
   return (
     <main className="h-full w-full flex flex-col gap-4">
-      <NewPost />
-      <Posts />
+      {accountCalled && data?.accounts !== null && (
+        <>
+          <NewPost />
+          <Posts />
+        </>
+      )}
+      {accountCalled && data?.accounts === null && (
+        <>
+          <CreateAccount />
+        </>
+      )}
     </main>
   );
 };

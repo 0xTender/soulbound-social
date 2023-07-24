@@ -54,12 +54,14 @@ impl MutationRoot {
         first_name: String,
         last_name: String,
         image: String,
+        username: String,
     ) -> Vec<u8> {
         bcs::to_bytes(&Operation::CreateAccount {
             account_id,
             first_name,
             last_name,
             image,
+            username,
         })
         .unwrap()
     }

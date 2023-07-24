@@ -59,6 +59,7 @@ impl Application {
         first_name: String,
         last_name: String,
         image: String,
+        username: String,
     ) {
         let account = self.accounts.get(&account_id).await.unwrap();
         assert!(account.is_none(), "Account already exists");
@@ -70,6 +71,7 @@ impl Application {
                     first_name,
                     last_name,
                     image,
+                    username,
                 },
             )
             .unwrap();

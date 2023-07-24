@@ -1,28 +1,47 @@
 "use client";
 
-import { type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren, useEffect } from "react";
 import GraphQLProvider from "./GraphQLProvider";
 import Layout from "../layout";
 import { ThemeProvider } from "./ThemeProvider";
+import {
+  type StateContextType,
+  StateContextProvider,
+} from "@app/components/providers/StateContext";
 
 export function Providers({
   children,
   applicationId,
   port,
-}: PropsWithChildren<{
-  applicationId: string;
-  port: string;
-}>) {
+  accountId,
+}: PropsWithChildren<StateContextType>) {
+  const [state, setState] = useState<StateContextType>({
+    applicationId: "",
+    port: "",
+    accountId: "",
+  });
+
+  useEffect(() => {
+    setState({
+      applicationId,
+      port,
+      accountId,
+    });
+  }, [applicationId, port, accountId]);
+
   return (
-    <GraphQLProvider
-      {...{
-        applicationId,
-        port,
-      }}
-    >
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Layout>{children}</Layout>
-      </ThemeProvider>
-    </GraphQLProvider>
+    <StateContextProvider value={{ ...state }}>
+      <GraphQLProvider
+        {...{
+          applicationId,
+          port,
+          accountId,
+        }}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Layout>{children}</Layout>
+        </ThemeProvider>
+      </GraphQLProvider>
+    </StateContextProvider>
   );
 }

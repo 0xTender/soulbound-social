@@ -54,9 +54,10 @@ impl Contract for Application {
                 first_name,
                 last_name,
                 image,
+                username,
             } => {
                 Self::check_account_authentication(None, context.authenticated_signer, account_id)?;
-                self.init_account(account_id, first_name, last_name, image)
+                self.init_account(account_id, first_name, last_name, image, username)
                     .await;
             }
             soulbound::Operation::UpdateAccountData {

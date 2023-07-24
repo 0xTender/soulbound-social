@@ -42,6 +42,7 @@ pub enum Operation {
         first_name: String,
         last_name: String,
         image: String,
+        username: String,
     },
     UpdateAccountData {
         account_id: AccountId,
@@ -64,6 +65,7 @@ pub struct AccountDetails {
     pub first_name: String,
     pub last_name: String,
     pub image: String,
+    pub username: String,
 }
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize, SimpleObject)]

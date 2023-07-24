@@ -13,7 +13,7 @@ import { gql, useQuery } from "@apollo/client";
 
 export default function Post({
   name,
-  time,
+  // time,
   logo,
   logoAlt,
   id,
